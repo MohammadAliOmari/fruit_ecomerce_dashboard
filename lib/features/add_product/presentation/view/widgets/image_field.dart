@@ -7,7 +7,7 @@ import 'package:skeletonizer/skeletonizer.dart';
 
 class ImageField extends StatefulWidget {
   const ImageField({super.key, required this.onImageSelected});
-  final Function(File image)? onImageSelected;
+  final ValueChanged<File?> onImageSelected;
 
   @override
   State<ImageField> createState() => _ImageFieldState();
@@ -30,7 +30,7 @@ class _ImageFieldState extends State<ImageField> {
             final XFile? image =
                 await picker.pickImage(source: ImageSource.gallery);
             imageFile = File(image!.path);
-            widget.onImageSelected!(imageFile!);
+            widget.onImageSelected(imageFile);
           } on Exception catch (e) {
             isLoading = false;
             log(e.toString());
@@ -64,7 +64,7 @@ class _ImageFieldState extends State<ImageField> {
               IconButton(
                   onPressed: () {
                     imageFile = null;
-                    widget.onImageSelected!(imageFile!);
+                    widget.onImageSelected(imageFile);
                     setState(() {});
                   },
                   icon: const Icon(

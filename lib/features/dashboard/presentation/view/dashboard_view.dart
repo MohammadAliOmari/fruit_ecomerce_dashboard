@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:fruit_dashboard/core/utils/app_colors.dart';
 import 'package:fruit_dashboard/core/utils/app_text_styles.dart';
@@ -38,6 +36,7 @@ class _DashboardViewState extends State<DashboardView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        scrolledUnderElevation: 0.0,
         centerTitle: true,
         automaticallyImplyLeading: false,
         title: const Text('Overview'),
