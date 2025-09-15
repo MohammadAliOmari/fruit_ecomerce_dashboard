@@ -29,7 +29,7 @@ class CustomButton extends StatelessWidget {
         onPressed: onPressed,
         child: Text(
           title,
-          style: AppTextStyles().bodyBasabold,
+          style: const AppTextStyles().bodyBasabold,
         ),
       ),
     );

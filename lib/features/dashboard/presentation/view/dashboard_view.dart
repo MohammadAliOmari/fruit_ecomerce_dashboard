@@ -27,7 +27,7 @@ class _DashboardViewState extends State<DashboardView> {
     Icons.person,
   ];
   final List<Widget> _screens = [
-    HomeView(),
+    const HomeView(),
     Container(),
     Container(),
     Container(),

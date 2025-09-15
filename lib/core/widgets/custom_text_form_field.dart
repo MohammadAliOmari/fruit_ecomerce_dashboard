@@ -48,7 +48,7 @@ class CustomTextFormField extends StatelessWidget {
             : null,
         filled: true,
         fillColor: AppColors.lightgrey.withOpacity(.2),
-        hintStyle: AppTextStyles().bodysmallbold.copyWith(
+        hintStyle: const AppTextStyles().bodysmallbold.copyWith(
               color: AppColors.lightgrey2,
             ),
         hintText: hintText,
@@ -70,7 +70,7 @@ class CustomTextFormField extends StatelessWidget {
   OutlineInputBorder buildBorder() {
     return OutlineInputBorder(
       borderRadius: BorderRadius.circular(4.0),
-      borderSide: BorderSide(
+      borderSide: const BorderSide(
         color: AppColors.lightgrey,
         width: 1,
       ),
