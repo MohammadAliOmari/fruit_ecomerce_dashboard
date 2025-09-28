@@ -5,7 +5,7 @@ import 'package:fruit_dashboard/core/services/storage_services.dart';
 import 'package:path/path.dart' as b;
 
 class FireStorage implements StorageServices {
-  final storageRef = FirebaseStorage.instance.ref();
+  Reference storageRef = FirebaseStorage.instance.ref();
 
   @override
   Future<String> uploadImage(File image, String path) async {

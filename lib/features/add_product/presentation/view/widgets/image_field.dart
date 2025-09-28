@@ -6,8 +6,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class ImageField extends StatefulWidget {
-  const ImageField({super.key, required this.onImageSelected});
+  const ImageField({super.key, required this.onImageSelected, this.selectedImage});
   final ValueChanged<File?> onImageSelected;
+  final File? selectedImage;
 
   @override
   State<ImageField> createState() => _ImageFieldState();
@@ -16,6 +17,22 @@ class ImageField extends StatefulWidget {
 class _ImageFieldState extends State<ImageField> {
   bool isLoading = false;
   File? imageFile;
+
+  @override
+  void initState() {
+    super.initState();
+    imageFile = widget.selectedImage;
+  }
+
+  @override
+  void didUpdateWidget(covariant ImageField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.selectedImage?.path != widget.selectedImage?.path) {
+      imageFile = widget.selectedImage;
+      setState(() {});
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Skeletonizer(
@@ -29,7 +46,7 @@ class _ImageFieldState extends State<ImageField> {
             // Pick an image.
             final XFile? image =
                 await picker.pickImage(source: ImageSource.gallery);
-            imageFile = File(image!.path);
+            imageFile = image != null ? File(image.path) : null;
             widget.onImageSelected(imageFile);
           } on Exception catch (e) {
             isLoading = false;

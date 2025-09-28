@@ -1,11 +1,12 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fruit_dashboard/core/utils/app_colors.dart';
 import 'package:fruit_dashboard/core/utils/app_text_styles.dart';
 import 'package:fruit_dashboard/core/widgets/custom_button.dart';
 import 'package:fruit_dashboard/core/widgets/custom_text_form_field.dart';
 import 'package:fruit_dashboard/features/add_product/domain/entities/add_product_entity.dart';
+import 'package:fruit_dashboard/features/add_product/presentation/manager/cubit/add_product_cubit.dart';
+import 'package:fruit_dashboard/features/add_product/presentation/view/widgets/add_product_view_body_bloc_listener.dart';
 import 'package:fruit_dashboard/features/add_product/presentation/view/widgets/image_field.dart';
 
 class AddProductViewBody extends StatefulWidget {
@@ -16,47 +17,41 @@ class AddProductViewBody extends StatefulWidget {
 }
 
 class _AddProductViewBodyState extends State<AddProductViewBody> {
-  GlobalKey<FormState> formKey = GlobalKey<FormState>();
   AutovalidateMode autovalidateMode = AutovalidateMode.disabled;
-  TextEditingController productNameController = TextEditingController();
-  TextEditingController productPriceController = TextEditingController();
-  TextEditingController productCodeController = TextEditingController();
-  TextEditingController productDescriptionController = TextEditingController();
-  bool isFutureProduct = false;
-  File? image;
   @override
   Widget build(BuildContext context) {
+    AddProductCubit cubit = context.read<AddProductCubit>();
     return SingleChildScrollView(
       child: Form(
-        key: formKey,
+        key: cubit.formKey,
         autovalidateMode: autovalidateMode,
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
               CustomTextFormField(
-                  controller: productNameController,
+                  controller: cubit.productNameController,
                   hintText: 'Product Name ',
                   keyboardType: TextInputType.text),
               const SizedBox(
                 height: 16,
               ),
               CustomTextFormField(
-                  controller: productPriceController,
+                  controller: cubit.productPriceController,
                   hintText: 'Product Price',
                   keyboardType: TextInputType.number),
               const SizedBox(
                 height: 16,
               ),
               CustomTextFormField(
-                  controller: productCodeController,
+                  controller: cubit.productCodeController,
                   hintText: 'product Code ',
                   keyboardType: TextInputType.text),
               const SizedBox(
                 height: 16,
               ),
               CustomTextFormField(
-                  controller: productDescriptionController,
+                  controller: cubit.productDescriptionController,
                   maxLines: 5,
                   hintText: ' Product Description',
                   keyboardType: TextInputType.text),
@@ -72,17 +67,19 @@ class _AddProductViewBodyState extends State<AddProductViewBody> {
                   'Is Future Product?',
                   style: const AppTextStyles().bodysmallSemibold,
                 ),
-                value: isFutureProduct,
+                value: cubit.isFutureProduct,
                 activeColor: AppColors.primary,
                 onChanged: (value) {
-                  isFutureProduct = value!;
+                  cubit.isFutureProduct = value!;
                   setState(() {});
                 },
               ),
               const SizedBox(height: 16),
               ImageField(
+                selectedImage: cubit.image,
                 onImageSelected: (imageFile) {
-                  image = imageFile;
+                  cubit.image = imageFile;
+                  setState(() {});
                 },
               ),
               const SizedBox(height: 32),
@@ -91,21 +88,22 @@ class _AddProductViewBodyState extends State<AddProductViewBody> {
                   width: double.infinity,
                   height: 50,
                   onPressed: () {
-                    if (image != null) {
+                    if (cubit.image != null) {
                       // Proceed with form submission
-                      if (formKey.currentState!.validate()) {
-                        formKey.currentState!.save();
+                      if (cubit.formKey.currentState!.validate()) {
+                        cubit.formKey.currentState!.save();
                         AddProductEntity addProductEntity = AddProductEntity(
-                          name: productNameController.text,
-                          price: double.tryParse(productPriceController.text) ??
+                          name: cubit.productNameController.text,
+                          price: double.tryParse(
+                                  cubit.productPriceController.text) ??
                               0.0,
-                          code: num.tryParse(
-                                  productCodeController.text.toLowerCase()) ??
-                              0,
-                          description: productDescriptionController.text,
-                          isFutureProduct: isFutureProduct,
-                          image: image!,
+                          code: cubit.productCodeController.text.toLowerCase(),
+                          description: cubit.productDescriptionController.text,
+                          isFutureProduct: cubit.isFutureProduct,
+                          image: cubit.image!,
                         );
+
+                        cubit.addProduct(addProductEntity);
                       } else {
                         autovalidateMode = AutovalidateMode.always;
                         setState(() {});
@@ -120,6 +118,7 @@ class _AddProductViewBodyState extends State<AddProductViewBody> {
                     }
                   }),
               const SizedBox(height: 32),
+              const AddProductBlocListener(),
             ],
           ),
         ),

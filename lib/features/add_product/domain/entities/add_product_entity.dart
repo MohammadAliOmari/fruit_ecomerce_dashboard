@@ -4,10 +4,10 @@ class AddProductEntity {
   final String name;
   final String description;
   final double price;
-  final num code;
+  final String code;
   final bool isFutureProduct;
   final File? image;
-  final String? imagePath;
+  String? imagePath;
 
   AddProductEntity({
     required this.code,
