@@ -51,6 +51,27 @@ class _AddProductViewBodyState extends State<AddProductViewBody> {
                 height: 16,
               ),
               CustomTextFormField(
+                  controller: cubit.expireDateController,
+                  hintText: 'Expire Date With Month',
+                  keyboardType: TextInputType.number),
+              const SizedBox(
+                height: 16,
+              ),
+              CustomTextFormField(
+                  controller: cubit.caloriesController,
+                  hintText: 'Number Of Calories',
+                  keyboardType: TextInputType.number),
+              const SizedBox(
+                height: 16,
+              ),
+              CustomTextFormField(
+                  controller: cubit.unitAmountController,
+                  hintText: 'Number Of Unit Amount',
+                  keyboardType: TextInputType.number),
+              const SizedBox(
+                height: 16,
+              ),
+              CustomTextFormField(
                   controller: cubit.productDescriptionController,
                   maxLines: 5,
                   hintText: ' Product Description',
@@ -65,12 +86,32 @@ class _AddProductViewBodyState extends State<AddProductViewBody> {
                 contentPadding: EdgeInsets.zero,
                 title: Text(
                   'Is Future Product?',
-                  style: const AppTextStyles().bodysmallSemibold,
+                  style: const AppTextStyles().bodysmallSemibold.copyWith(
+                        color: AppColors.lightgrey2,
+                      ),
                 ),
                 value: cubit.isFutureProduct,
                 activeColor: AppColors.primary,
                 onChanged: (value) {
                   cubit.isFutureProduct = value!;
+                  setState(() {});
+                },
+              ),
+              CheckboxListTile(
+                checkboxShape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(4.0),
+                ),
+                contentPadding: EdgeInsets.zero,
+                title: Text(
+                  'Is Organic?',
+                  style: const AppTextStyles().bodysmallSemibold.copyWith(
+                        color: AppColors.lightgrey2,
+                      ),
+                ),
+                value: cubit.isOrganic,
+                activeColor: AppColors.primary,
+                onChanged: (value) {
+                  cubit.isOrganic = value!;
                   setState(() {});
                 },
               ),
@@ -93,6 +134,15 @@ class _AddProductViewBodyState extends State<AddProductViewBody> {
                       if (cubit.formKey.currentState!.validate()) {
                         cubit.formKey.currentState!.save();
                         AddProductEntity addProductEntity = AddProductEntity(
+                          reviews: [],
+                          expireDate:
+                              int.parse(cubit.expireDateController.text),
+                          isOrganic: cubit.isOrganic,
+                          calories: int.parse(cubit.caloriesController.text),
+                          unitAmount:
+                              int.parse(cubit.unitAmountController.text),
+                          avgRating: 0,
+                          totalRating: 0,
                           name: cubit.productNameController.text,
                           price: double.tryParse(
                                   cubit.productPriceController.text) ??

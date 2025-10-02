@@ -25,7 +25,7 @@ class SigninBlocListener extends StatelessWidget {
           );
         } else if (state is SigninSuccess) {
           Navigator.pop(context); // Close the loading dialog
-          Navigator.pushNamed(context, DashboardView.routeName);
+          Navigator.pushReplacementNamed(context, DashboardView.routeName);
         } else if (state is SigninFailure) {
           Navigator.pop(context); // Close the loading dialog
           builderrorsnackbar(context, state.message);

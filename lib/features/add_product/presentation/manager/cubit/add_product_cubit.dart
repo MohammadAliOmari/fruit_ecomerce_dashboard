@@ -19,7 +19,13 @@ class AddProductCubit extends Cubit<AddProductState> {
   TextEditingController productPriceController = TextEditingController();
   TextEditingController productCodeController = TextEditingController();
   TextEditingController productDescriptionController = TextEditingController();
+  TextEditingController expireDateController = TextEditingController();
+  TextEditingController caloriesController = TextEditingController();
+  TextEditingController unitAmountController = TextEditingController();
+  // TextEditingController avgRatingController = TextEditingController();
+  // TextEditingController totalRatingController = TextEditingController();
   bool isFutureProduct = false;
+  bool isOrganic = false;
   File? image;
 
   Future<void> addProduct(AddProductEntity product) async {
@@ -47,8 +53,12 @@ class AddProductCubit extends Cubit<AddProductState> {
     productPriceController.clear();
     productCodeController.clear();
     productDescriptionController.clear();
+    expireDateController.clear();
+    caloriesController.clear();
+    unitAmountController.clear();
     // Reset flags and image
     isFutureProduct = false;
+    isOrganic = false;
     image = null;
     // Emit a state to notify listeners/UI to rebuild
     emit(AddProductInitial());
